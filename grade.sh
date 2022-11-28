@@ -31,7 +31,7 @@ cp TestListExamples.java $FDIR
 cp -r lib $FDIR
 cd $FDIR
 
-javac -cp $CPATH *.java > compile.txt 2> complile-err.txt
+javac -cp $CPATH *.java > compile.txt 2> compile-err.txt
 
 if [ $? -eq 0 ]
 then
@@ -50,9 +50,9 @@ then
     echo "4/4, perfect score!"
     exit 0
 else
-    SCORE=$(grep -o 'Failures: [1-4]' TestResults | grep -Eo '[1-4]+')
+    SCORE=$(grep -o 'Failures: [1-4]' result.txt | grep -Eo '[1-4]+')
     let "SCORE = 4 - SCORE"
     echo "$SCORE/4."
-    echo result.txt
+    cat result.txt
     exit 0
 fi
