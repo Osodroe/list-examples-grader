@@ -2,8 +2,8 @@
 
 CPATH=".;./lib/hamcrest-core-1.3.jar;./lib/junit-4.13.2.jar"
 
-rm -rf student-submission
-git clone -q $1 student-submission/ > ErrMessage
+rm -rf student-submission > out.txt 2> out-err.txt
+git clone -q $1 student-submission/ > git.txt 2> git-err.txt
 
 FPATH=$(find student-submission/* -type f)
 
@@ -31,7 +31,7 @@ cp TestListExamples.java $FDIR
 cp -r lib $FDIR
 cd $FDIR
 
-javac -cp $CPATH *.java 2> ErrMessage
+javac -cp $CPATH *.java > compile.txt 2> complile-err.txt
 
 if [ $? -eq 0 ]
 then
@@ -41,9 +41,9 @@ else
     exit 1
 fi
 
-java -cp $CPATH org.junit.runner.JUnitCore TestListExamples > TestResults
+java -cp $CPATH org.junit.runner.JUnitCore TestListExamples > result.txt 2> result-err.txt
 
-grep -q "OK" TestResults 
+grep -q "OK" result.txt 
 
 if [ $? -eq 0 ]
 then 
@@ -53,5 +53,6 @@ else
     SCORE=$(grep -o 'Failures: [1-4]' TestResults | grep -Eo '[1-4]+')
     let "SCORE = 4 - SCORE"
     echo "$SCORE/4."
+    echo result.txt
     exit 0
 fi
